@@ -9,6 +9,7 @@ type ResourceFactory interface {
 	CreateRootResource(href string) Resource
 	CreateEmbeddedResource(href string) Resource
 	CreateLink(relationName string, href string, curieLinkName string) LinkRelation
+	CreateLinks(relationName string, hrefs []string, curieLinkName string) LinkRelation
 	CreateResourceLink(relationName string, curieLinkName string) ResourceRelation
 }
 
