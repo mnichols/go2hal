@@ -57,6 +57,37 @@ func (rf *resourceFactory) CreateLink(relationName string, href string, curieLin
 	return relation
 }
 
+// CreateLinks creates a Link Relation with given relationName and _n_ hrefs. A CURIE link can
+// be added by curieLinkName. The real CURIE link is picked from the set of CURIE links the factory
+// is initialised with.
+func (rf *resourceFactory) CreateLinks(relationName string, hrefs []string, curieLinkName string) LinkRelation {
+	relation, relationError := NewLinkRelation(relationName)
+
+	if relationError != nil {
+		return nil
+	}
+	lnks := make([]*LinkObject, len(hrefs))
+	for i := 0; i < len(hrefs); i++ {
+		link, linkError := NewLinkObject(href)
+
+		if linkError != nil {
+			return nil
+		}
+		lnks[i] = link
+
+		if curieLinkName != "" {
+			curieLink := rf.curieLinks[curieLinkName]
+
+			if curieLink != nil {
+				relation.SetCurieLink(curieLink)
+			}
+		}
+	}
+	relation.SetLinks(lnks)
+
+	return relation
+}
+
 // CreateResourceLink creates a Link Relation with given relationName. A CURIE link can
 // be added by curieLinkName. The real CURIE link is picked from the set of CURIE links the factory
 // is initialised with.
