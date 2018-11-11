@@ -69,22 +69,22 @@ func (rf *resourceFactory) CreateLinks(relationName string, hrefs []string, curi
 	}
 	lnks := make([]*LinkObject, len(hrefs))
 	for i := 0; i < len(hrefs); i++ {
-		link, linkError := NewLinkObject(href)
+		link, linkError := NewLinkObject(hrefs[i])
 
 		if linkError != nil {
 			return nil
 		}
 		lnks[i] = link
 
-		if curieLinkName != "" {
-			curieLink := rf.curieLinks[curieLinkName]
-
-			if curieLink != nil {
-				relation.SetCurieLink(curieLink)
-			}
-		}
 	}
 	relation.SetLinks(lnks)
+	if curieLinkName != "" {
+		curieLink := rf.curieLinks[curieLinkName]
+
+		if curieLink != nil {
+			relation.SetCurieLink(curieLink)
+		}
+	}
 
 	return relation
 }
